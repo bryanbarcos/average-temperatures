@@ -1,7 +1,6 @@
 import tkinter as tk
 
-fields = ('From [YYYY-MM-DD]', 'To [YYYY-MM-DD]', 'Cities')
-api_key = "EHD29EG4WHLS28WS2A5HW42LF"
+fields = ('API KEY', 'From [YYYY-MM-DD]', 'To [YYYY-MM-DD]', 'Cities')
 
 if __name__ == '__main__':
     import weather_gui as wg
