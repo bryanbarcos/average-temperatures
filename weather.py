@@ -9,11 +9,6 @@ to_date = ''
 api_key = ''
 
 def process_entries(entries):
-    # period rate:
-    print('FINAL_BALANCE_FUNCTION_CALL')
-    print(entries['From [YYYY-MM-DD]'].get())
-    print(entries['To [YYYY-MM-DD]'].get())
-    print(entries['Cities'].get())
 
     # Remove whitespaces in case for mistake during user input
     locations = entries['Cities'].get()
