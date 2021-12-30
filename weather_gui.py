@@ -3,9 +3,8 @@ import tkinter as tk
 def makeform(root, fields):
     entries = {}
     for field in fields:
-        print(field)
         row = tk.Frame(root)
-        lab = tk.Label(row, width=22, text=field+': ', anchor='w')
+        lab = tk.Label(row, width=35, text=field+': ', anchor='w')
         ent = tk.Entry(row)
         ent.insert(0, '')
         row.pack(side=tk.TOP, 
