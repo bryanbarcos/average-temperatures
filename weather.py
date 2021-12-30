@@ -35,6 +35,11 @@ def process_entries(entries):
     for further processing
     '''
 
+    global cities_list
+    global from_date
+    global to_date
+    global api_key
+
     # Remove whitespaces in case for mistake during user input
     locations = entries['Cities'].get()
     locations2 = locations.replace(' ', '')
@@ -76,6 +81,9 @@ def read_csv(csv_bytes):
 def calculate_average(entries):
     process_entries(entries)
 
+    for loc in cities_list:
+        api_call = make_url(loc)
+        print(api_call)
     
 
 if __name__ == '__main__':
