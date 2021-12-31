@@ -79,6 +79,7 @@ if __name__ == '__main__':
     import weather_gui as wg
 
     root = tk.Tk()
+    root.title('Average Weather')
     ents = wg.makeform(root, fields)
     b1 = tk.Button(root, text='Get Average Temp',
            command=(lambda e=ents: calculate_average(e)))
