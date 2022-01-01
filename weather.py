@@ -72,8 +72,19 @@ def calculate_average(entries):
             sys.exit()
 
         string = csv_bytes.read().decode('utf-8')
-        something = json.loads(string)
-        print(something['days']) 
+        response = json.loads(string)
+
+        # TESTING PURPOSES
+        print(response['days']) 
+
+        days_temp_response = []
+
+        # move response dict elements into list
+        for x in response['days']:
+            days_temp_response.append(x['temp'])
+        print(days_temp_response)
+        avg = sum(days_temp_response) / len(days_temp_response)
+        print(loc + ' avg = ' + str(avg))
 
 if __name__ == '__main__':
     import weather_gui as wg
