@@ -16,7 +16,6 @@ from_date = ''
 to_date = ''
 api_key = ''
 
-
 def make_url(location):
     '''
     Creates the url for the api call
@@ -54,7 +53,12 @@ def process_entries(entries):
     api_key = entries['API KEY'].get()
 
 def calculate_average(entries):
+
     process_entries(entries)
+
+    total_avg = 0
+
+    final_result = []
 
     for loc in cities_list:
         api_call = make_url(loc)
@@ -82,9 +86,17 @@ def calculate_average(entries):
         # move response dict elements into list
         for x in response['days']:
             days_temp_response.append(x['temp'])
-        print(days_temp_response)
+
         avg = sum(days_temp_response) / len(days_temp_response)
-        print(loc + ' avg = ' + str(avg))
+
+        total_avg += avg
+        avg = round(avg, 2)
+        city_result = loc + ' Average Temp = ' + str(avg)
+        final_result.append(city_result)
+
+    total_avg = total_avg / len(cities_list)
+    total_avg = round(total_avg, 2)
+    total_avg_result = 'Total Average = ' + total_avg
 
 if __name__ == '__main__':
     import weather_gui as wg
