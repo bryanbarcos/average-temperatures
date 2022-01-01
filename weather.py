@@ -7,7 +7,7 @@ import urllib.error
 import sys
 import json
 
-fields = ('API KEY', 'From [YYYY-MM-DD]', 'To [YYYY-MM-DD]', 'Cities', 'Calculated Average Temperature')
+fields = ('API KEY', 'From [YYYY-MM-DD]', 'To [YYYY-MM-DD]', 'Cities')
 baseUrl = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 unitGroup = 'metric'
 
@@ -16,6 +16,19 @@ from_date = ''
 to_date = ''
 api_key = ''
 
+final_result = []
+total_avg_result = ''
+
+
+def display_result(root, result_list, result_total):
+    t = tk.Text(root, height=5, width=50)
+
+    for x in result_list:
+        t.insert(tk.END, x + '\n')
+    t.insert(tk.END, result_total + '\n')
+    t.pack()
+
+    
 
 def make_url(location):
     '''
@@ -53,8 +66,14 @@ def process_entries(entries):
     to_date = entries['To [YYYY-MM-DD]'].get()
     api_key = entries['API KEY'].get()
 
-def calculate_average(entries):
+def calculate_average(entries, root):
+
     process_entries(entries)
+
+    total_avg = 0
+
+    global final_result
+    global total_avg_result
 
     for loc in cities_list:
         api_call = make_url(loc)
@@ -72,16 +91,35 @@ def calculate_average(entries):
             sys.exit()
 
         string = csv_bytes.read().decode('utf-8')
-        something = json.loads(string)
-        print(something['days']) 
+        response = json.loads(string)
+
+        days_temp_response = []
+
+        # move response dict elements into list
+        for x in response['days']:
+            days_temp_response.append(x['temp'])
+
+        avg = sum(days_temp_response) / len(days_temp_response)
+
+        total_avg += avg
+        avg = round(avg, 2)
+        city_result = loc + ' Average Temp = ' + str(avg)
+        final_result.append(city_result)
+
+    total_avg = total_avg / len(cities_list)
+    total_avg = round(total_avg, 2)
+    total_avg_result = 'Total Average = ' + str(total_avg)
+
+    display_result(root, final_result, total_avg_result)
 
 if __name__ == '__main__':
     import weather_gui as wg
 
     root = tk.Tk()
+    root.title('Average Weather')
     ents = wg.makeform(root, fields)
     b1 = tk.Button(root, text='Get Average Temp',
-           command=(lambda e=ents: calculate_average(e)))
+           command=(lambda e=ents: calculate_average(e, root)))
     b1.pack(side=tk.LEFT, padx=5, pady=5)
     b3 = tk.Button(root, text='Quit', command=root.quit)
     b3.pack(side=tk.LEFT, padx=5, pady=5)
