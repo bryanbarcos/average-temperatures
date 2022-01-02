@@ -17,3 +17,14 @@ def makeform(root, fields):
                  fill=tk.X)
         entries[field] = ent
     return entries
+
+def display_result(root, result_list, result_total):
+    '''
+    Add a textbox with the results to the GUI
+    '''
+    t = tk.Text(root, height=5, width=50)
+
+    for x in result_list:
+        t.insert(tk.END, x + '\n')
+    t.insert(tk.END, result_total + '\n')
+    t.pack()
