@@ -1,11 +1,10 @@
 import tkinter as tk
-import csv
-import codecs
 from urllib import response
 import urllib.request
 import urllib.error
 import sys
 import json
+import weather_gui as wg
 
 fields = ('API KEY', 'From [YYYY-MM-DD]', 'To [YYYY-MM-DD]', 'Cities')
 baseUrl = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
@@ -14,21 +13,7 @@ unitGroup = 'metric'
 cities_list = []
 from_date = ''
 to_date = ''
-api_key = ''
-
-final_result = []
-total_avg_result = ''
-
-
-def display_result(root, result_list, result_total):
-    t = tk.Text(root, height=5, width=50)
-
-    for x in result_list:
-        t.insert(tk.END, x + '\n')
-    t.insert(tk.END, result_total + '\n')
-    t.pack()
-
-    
+api_key = ''  
 
 def make_url(location):
     '''
@@ -57,6 +42,7 @@ def process_entries(entries):
     global to_date
     global api_key
 
+    # Get all values from the user input in the GUI
     # Remove whitespaces in case for mistake during user input
     locations = entries['Cities'].get()
     locations2 = locations.replace(' ', '')
@@ -71,13 +57,13 @@ def calculate_average(entries, root):
     process_entries(entries)
 
     total_avg = 0
-
-    global final_result
-    global total_avg_result
+    final_result = []
+    total_avg_result = ''
 
     for loc in cities_list:
         api_call = make_url(loc)
         
+        # make the api call to visual crossing server
         try:
             csv_bytes = urllib.request.urlopen(api_call)
         except urllib.error.HTTPError as e:
@@ -90,6 +76,7 @@ def calculate_average(entries, root):
             print('Error code: ', e.code, error_info)
             sys.exit()
 
+        # reads the response from the server and stores the JSON obj
         string = csv_bytes.read().decode('utf-8')
         response = json.loads(string)
 
@@ -99,28 +86,32 @@ def calculate_average(entries, root):
         for x in response['days']:
             days_temp_response.append(x['temp'])
 
+        # calculate average temp for the current location object
         avg = sum(days_temp_response) / len(days_temp_response)
-
         total_avg += avg
         avg = round(avg, 2)
         city_result = loc + ' Average Temp = ' + str(avg)
         final_result.append(city_result)
 
+    # calculate average temp of all locations
     total_avg = total_avg / len(cities_list)
     total_avg = round(total_avg, 2)
     total_avg_result = 'Total Average = ' + str(total_avg)
 
-    display_result(root, final_result, total_avg_result)
+    wg.display_result(root, final_result, total_avg_result)
 
 if __name__ == '__main__':
-    import weather_gui as wg
-
     root = tk.Tk()
     root.title('Average Weather')
+
+    # calls the makeform function inside the file weather_gui.py 
     ents = wg.makeform(root, fields)
+
+    # Create the buttons that will be on the GUI
     b1 = tk.Button(root, text='Get Average Temp',
-           command=(lambda e=ents: calculate_average(e, root)))
+        command=(lambda e=ents: calculate_average(e, root)))
     b1.pack(side=tk.LEFT, padx=5, pady=5)
     b3 = tk.Button(root, text='Quit', command=root.quit)
     b3.pack(side=tk.LEFT, padx=5, pady=5)
+
     root.mainloop()
