@@ -6,7 +6,7 @@ import sys
 import json
 import weather_gui as wg
 
-fields = ('API KEY', 'From [YYYY-MM-DD]', 'To [YYYY-MM-DD]', 'Cities')
+fields = ('API KEY', 'From [YYYY-MM-DD]', 'To [YYYY-MM-DD]', 'Cities (separate by a \'-\')')
 baseUrl = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
 unitGroup = 'metric'
 
@@ -44,7 +44,7 @@ def process_entries(entries):
 
     # Get all values from the user input in the GUI
     # Remove whitespaces in case for mistake during user input
-    locations = entries['Cities'].get()
+    locations = entries['Cities (separate by a \'-\')'].get()
     locations2 = locations.replace(' ', '')
     cities_list = locations2.split('-')
 
@@ -111,6 +111,11 @@ if __name__ == '__main__':
     b1 = tk.Button(root, text='Get Average Temp',
         command=(lambda e=ents: calculate_average(e, root)))
     b1.pack(side=tk.LEFT, padx=5, pady=5)
+
+    b2 = tk.Button(root, text='Help', 
+        command= (lambda: wg.display_help(root)))
+    b2.pack(side=tk.LEFT, padx=5, pady=5)
+
     b3 = tk.Button(root, text='Quit', command=root.quit)
     b3.pack(side=tk.LEFT, padx=5, pady=5)
 

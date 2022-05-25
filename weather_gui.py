@@ -1,3 +1,4 @@
+from ctypes.wintypes import WORD
 import tkinter as tk
 
 def makeform(root, fields):
@@ -27,4 +28,20 @@ def display_result(root, result_list, result_total):
     for x in result_list:
         t.insert(tk.END, x + '\n')
     t.insert(tk.END, result_total + '\n')
+    t.pack()
+
+def display_help(root):
+    '''
+    Display an explanation and example of cities input format
+    '''
+
+    tutorial = ("You can get your API key by signing up for free at https://www.visualcrossing.com/sign-up\n\n" +
+                "FROM date and TO date are inclusive.\n\n" +
+                "Cities are separated by a '-'. Include the country, state, or province for higher accuracy.\n\n" +
+                "Example input: FROM: 2022-05-01    TO: 2022-05-10   CITIES: Toronto,Ontario - Barcelona,Spain")
+
+    tutorial_window = tk.Tk()
+    tutorial_window.title('Help')
+    t = tk.Text(tutorial_window, height=7, width=100)
+    t.insert(tk.END, tutorial)
     t.pack()
