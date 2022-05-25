@@ -3,6 +3,12 @@ A project to get the average temperatures from anywhere in the world within a sp
 
 It will output the average temperature for each city specified for the time range specified, as well as the average of the city averages passed. 
 
-This project uses Visual Crossing's weather API, which can be found at https://www.visualcrossing.com/weather-api.
 
-To run your query, you need to sign up with Visual Crossing to receive your API key.
+## Running the project
+
+Download the weather.exe file located in the project's latest release.
+Run the installer.
+The application will be located within the installed folder, named weather.exe
+
+This project requires an API key provided by Visual Crossing. Get your API key for free by signing up at https://www.visualcrossing.com/sign-up.
+
