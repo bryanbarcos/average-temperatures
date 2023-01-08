@@ -1,7 +1,7 @@
 # average-temperatures
 A project to get the average temperatures from anywhere in the world within a specified time frame. The product provides a GUI to easily attain historical average temperatures from specified cities.
 
-It will output the average temperature for each city specified for the time range specified, as well as the average of the city averages passed. 
+It will output the average temperature for each city as well as the overall average for the time range specified.
 
 
 ## Running the project
